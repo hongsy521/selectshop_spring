@@ -39,9 +39,12 @@ public class ProductController {
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return productService.getProducts(userDetails.getUser(), page-1,size,sortBy,isAsc);
     }
-    /*// 관리자 게정으로 모든 리스트 조회 가능
-    @GetMapping("/admin/products")
-    public List<ProductResponseDto> getAllProducts(){
-        return productService.getAllProducts();
-    }*/
+    // 상품을 폴더에 추가
+    @PostMapping("/products/{productId}/folder")
+    public void addFolder(
+            @PathVariable Long productId,
+            @RequestParam Long folderId,
+            @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        productService.addFolder(productId,folderId,userDetails.getUser());
+    }
 }

@@ -25,4 +25,10 @@ public class FolderController {
         folderService.createFolder(folderNames,userDetails.getUser());
     }
 
+    // 폴더 전체 조회
+    @GetMapping("/folders")
+    public List<FolderResponseDto> getFolders(@AuthenticationPrincipal UserDetailsImpl userDetails){
+        return folderService.getFolders(userDetails.getUser());
+    }
+
 }

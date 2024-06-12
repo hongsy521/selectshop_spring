@@ -5,7 +5,7 @@ import com.sparta.myselectshop.dto.ProductRequestDto;
 import com.sparta.myselectshop.dto.ProductResponseDto;
 import com.sparta.myselectshop.entity.*;
 import com.sparta.myselectshop.naver.dto.ItemDto;
-import com.sparta.myselectshop.repository.FolderRespository;
+import com.sparta.myselectshop.repository.FolderRepository;
 import com.sparta.myselectshop.repository.ProductFolderRepository;
 import com.sparta.myselectshop.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,8 +16,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -25,7 +23,7 @@ import java.util.Optional;
 public class ProductService {
 
     private final ProductRepository productRepository;
-    private final FolderRespository folderRespository;
+    private final FolderRepository folderRepository;
     private final ProductFolderRepository productFolderRepository;
 
     public static final int MIN_MY_PRICE = 100;
@@ -77,7 +75,7 @@ public class ProductService {
 
     public void addFolder(Long productId, Long folderId, User user) {
         Product product = productRepository.findById(productId).orElseThrow(()->new NullPointerException("해당 상품을 찾을 수 없습니다."));
-        Folder folder = folderRespository.findById(folderId).orElseThrow(()->new NullPointerException("해당 폴더를 찾을 수 없습니다."));
+        Folder folder = folderRepository.findById(folderId).orElseThrow(()->new NullPointerException("해당 폴더를 찾을 수 없습니다."));
 
         // 해당 사용자의 상품/폴더가 맞는지 확인 Exception 던지기
         if(!product.getUser().getId().equals(user.getId()) || !folder.getUser().getId().equals(user.getId())){

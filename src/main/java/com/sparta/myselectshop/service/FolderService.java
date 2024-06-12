@@ -3,7 +3,7 @@ package com.sparta.myselectshop.service;
 import com.sparta.myselectshop.dto.FolderResponseDto;
 import com.sparta.myselectshop.entity.Folder;
 import com.sparta.myselectshop.entity.User;
-import com.sparta.myselectshop.repository.FolderRespository;
+import com.sparta.myselectshop.repository.FolderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,11 +13,11 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class FolderService {
-    private final FolderRespository folderRespository;
+    private final FolderRepository folderRepository;
 
     public void createFolder(List<String> folderNames, User user) {
         // 이미 만들어져 있는 폴더일 경우를 제외하기 위해 db에서 기존 데이터 가져와 비교
-        List<Folder> existFolderList = folderRespository.findAllByUserAndNameIn(user,folderNames);
+        List<Folder> existFolderList = folderRepository.findAllByUserAndNameIn(user,folderNames);
 
         List<Folder> folderList = new ArrayList<>();
         for (String foldername : folderNames) {
@@ -29,11 +29,11 @@ public class FolderService {
                 throw new IllegalArgumentException("중복된 폴더명입니다.");
             }
         }
-        folderRespository.saveAll(folderList);
+        folderRepository.saveAll(folderList);
     }
 
     public List<FolderResponseDto> getFolders(User user) {
-        List<Folder> folderList = folderRespository.findAllByUser(user);
+        List<Folder> folderList = folderRepository.findAllByUser(user);
         List<FolderResponseDto> folderResponseDtoList = new ArrayList<>();
         for (Folder folder : folderList) {
             folderResponseDtoList.add(new FolderResponseDto(folder));
